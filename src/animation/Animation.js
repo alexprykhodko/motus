@@ -3,6 +3,7 @@ import Point from '../Point';
 import Animator from '../animation/Animator';
 import throttle from 'lodash.throttle';
 import {
+  animationFrameWrapper,
   calculatePercent,
   getElementDimensions,
   getElementScroll,
@@ -30,7 +31,7 @@ class Animation {
     // how many decimals should a css property have
     precision: Animator.defaultOptions.precision,
     // interval of sleep
-    throttle: 10,
+    throttle: 0,
     // the element that will get the scroll listener and that will be used to calculate the scroll top and left
     $scrollElement: window,
     // is true the left offset wil be used to calculate the animation evolution
@@ -95,10 +96,15 @@ class Animation {
     // animator used to apply keyframes to the $el based on percent
     this._animator = new Animator(this.keyframes, this.options.$el);
     // throttle the method that will be called on scroll
-    this._compute = throttle(this.__compute, this.options.throttle);
+    this._compute = options.throttle > 0 ?
+      throttle(this.__compute, this.options.throttle) :
+      this._compute = animationFrameWrapper(this.__compute.bind(this));
     // throttle the method that will be called on on resize to update start and end point
     this._computePositions(this.options.startPoint, this.options.endPoint);
-    const handleResize = throttle(this._computePositions.bind(this), this.options.throttle);
+    const handleResize = options.throttle > 0 ?
+      throttle(this._computePositions.bind(this), this.options.throttle) :
+      animationFrameWrapper(this._computePositions.bind(this));
+
     window.addEventListener('resize', () => handleResize(this.options.startPoint, this.options.endPoint));
   }
 

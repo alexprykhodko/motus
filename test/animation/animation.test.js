@@ -190,6 +190,36 @@ describe('Animation', () => {
       });
     });
 
+    describe('onScrollBetween() with animationFrameWrapper', () => {
+      const scrollMock = jest.fn();
+      beforeEach(jest.resetAllMocks);
+      const newAnimation = new Animation({
+        startPoint: 100, endPoint: 200, $el: $element, keyframes: keyframesArr,
+        onScrollBetween: scrollMock,
+        throttle: 0,
+        ...defaultConfig,
+      });
+
+      it('contains the scroll position and scroll percent as parameters', () => {
+        window.scrollY = 190;
+        newAnimation.__compute();
+        expect(scrollMock.mock.calls[0][0]).toEqual(190);
+        expect(scrollMock.mock.calls[0][1]).toEqual(90);
+      });
+
+      it('triggers if it is inside parameters', () => {
+        window.scrollY = 190;
+        newAnimation.__compute();
+        expect(scrollMock.mock.calls.length).toEqual(1);
+      });
+
+      it('does not trigger if it is outside parameters', () => {
+        window.scrollY = 91;
+        newAnimation.__compute();
+        expect(scrollMock.mock.calls.length).toEqual(0);
+      });
+    });
+
     describe('onScrollBefore()', () => {
       const scrollMock = jest.fn();
       beforeEach(jest.resetAllMocks);

@@ -66,3 +66,14 @@ export const getOffset = (element, horizontal = false) => {
   if (element.offsetLeft === undefined) return getOffset(element.parentElement, horizontal);
   return getOffset(element.offsetParent, horizontal) + (horizontal ? element.offsetLeft : element.offsetTop);
 };
+
+export const animationFrameWrapper = func => {
+  return function (...args) {
+    if (func.__animationFrameWrapperTimeout) {
+      window.cancelAnimationFrame(func.__animationFrameWrapperTimeout);
+    }
+    func.__animationFrameWrapperTimeout = window.requestAnimationFrame(() => {
+      func(...args);
+    });
+  }
+}

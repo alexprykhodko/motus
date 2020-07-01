@@ -10,6 +10,7 @@ export { getElementDimensions } from './dom.js';
 export { getElementScroll } from './dom.js';
 export { getValue } from './dom.js';
 export { getElementDefaultProperty } from './dom.js';
+export { animationFrameWrapper } from './dom.js';
 
 // string
 export { createFunctionString } from './string.js';

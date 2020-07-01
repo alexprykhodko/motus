@@ -1,7 +1,8 @@
 # Throttle
 
 The **throttle** parameter give us control over the rate at which the function that calculates current scroll percentage and applies stiling on the element.
-By default **throttle** is set to *10*.
+
+By default **throttle** is set to *0*, which forces the use of the `window.requestAnimationFrame()` to throttle the animation updates.
 
 ```js
 const newAnimation = new Motus.Animation({
