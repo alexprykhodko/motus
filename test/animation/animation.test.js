@@ -242,8 +242,14 @@ describe('Animation', () => {
         expect(scrollMock.mock.calls.length).toEqual(1);
       });
 
-      it('does not trigger if it is outside parameters', () => {
+      it('triggers if it is at start position', () => {
         window.scrollY = 100;
+        newAnimation.__compute();
+        expect(scrollMock.mock.calls.length).toEqual(1);
+      });
+
+      it('does not trigger if it is outside parameters', () => {
+        window.scrollY = 101;
         newAnimation.__compute();
         expect(scrollMock.mock.calls.length).toEqual(0);
       });
@@ -326,17 +332,18 @@ describe('Animation', () => {
       });
 
       it('triggers once if it hits the top point or higher', () => {
-        window.scrollY = 99;
+        window.scrollY = 100;
         newAnimation.__compute();
         expect(scrollMock.mock.calls.length).toEqual(1);
       });
       it('triggers again only if the scroll over under the end point', () => {
-        window.scrollY = 99;
+        window.scrollY = 100;
         newAnimation.__compute();
         expect(scrollMock.mock.calls.length).toEqual(1);
         window.scrollY = 101;
         newAnimation.__compute();
-        window.scrollY = 99;
+        expect(scrollMock.mock.calls.length).toEqual(1);
+        window.scrollY = 100;
         newAnimation.__compute();
         expect(scrollMock.mock.calls.length).toEqual(2);
       });

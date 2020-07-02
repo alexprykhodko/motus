@@ -216,7 +216,7 @@ class Animation {
       this._animator.applyAnimations(scrollPercent);
       // call animation hook
       onScrollBetween && onScrollBetween(scroll, scrollPercent);
-    } else if (scroll < startPoint) { // BEFORE
+    } else if (scroll <= startPoint) { // BEFORE or AT the start point
       onScrollBefore && onScrollBefore(scroll);
       // apply only once
       if (!this.appliedAllBefore) {
