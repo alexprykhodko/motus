@@ -8,7 +8,7 @@ import { UNEXPECTED_ERROR } from '../enum/errorEnum';
 /** Each animation has an animator class. Handles getting the current keyframe that needs to be applied and also the percent of current keyframe. */
 export default class Animator {
   static defaultOptions = {
-    precision: 1,
+    precision: 3,
   };
 
   constructor (keyframes, $el, options = {}) { // todo the options object is not currently used
